@@ -88,6 +88,13 @@ function UpdateMovie(props) {
             })
             .then(res => {
                 props.setNeedToUpd(true)
+                props.updateInSavedList({
+                    title: formValues.name,
+                    director: formValues.director,
+                    metascore: formValues.metascore,
+                    stars: formValues.actors,
+                    id: params.id
+                })
                 history.push(`/movies/${params.id}`)
             })
             .catch(err => console.log(err.message))

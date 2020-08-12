@@ -45,6 +45,21 @@ const App = () => {
     }
   }, [needToUpd]);
 
+  const checkInSavedList = (id) => {
+    setSavedList(savedList.filter(el => {
+      return parseInt(el.id) !== parseInt(id)
+    }))
+  }
+
+  const updateInSavedList = (movie) => {
+    setSavedList(savedList.map(el => {
+      if(parseInt(el.id) !== parseInt(movie.id)) {
+        return el
+      } else {
+        return movie
+      }
+    }))
+  }
 
 
   return (
@@ -59,10 +74,10 @@ const App = () => {
             <MovieList movies={movieList} />
           </Route>
           <Route path="/movies/:id">
-            <Movie addToSavedList={addToSavedList} setNeedToUpd={setNeedToUpd} />
+            <Movie addToSavedList={addToSavedList} setNeedToUpd={setNeedToUpd} checkInSavedList={checkInSavedList} />
           </Route>
           <Route path="/update-movie/:id">
-            <UpdateMovie setNeedToUpd={setNeedToUpd} addMethod={false}/>
+            <UpdateMovie setNeedToUpd={setNeedToUpd} addMethod={false} updateInSavedList={updateInSavedList}/>
           </Route>
           <Route path="/add-movie">
             <UpdateMovie setNeedToUpd={setNeedToUpd} addMethod={true}/>
