@@ -10,6 +10,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 
 const useStyle = makeStyles(() => ({
   grid: {
+    padding: '15px 70px !important',
     '& a': {
       textDecoration: 'none'
     },
@@ -61,7 +62,10 @@ const App = () => {
             <Movie addToSavedList={addToSavedList} setNeedToUpd={setNeedToUpd} />
           </Route>
           <Route path="/update-movie/:id">
-            <UpdateMovie setNeedToUpd={setNeedToUpd}/>
+            <UpdateMovie setNeedToUpd={setNeedToUpd} addMethod={false}/>
+          </Route>
+          <Route path="/add-movie">
+            <UpdateMovie setNeedToUpd={setNeedToUpd} addMethod={true}/>
           </Route>
         </Grid>
       </Grid>
