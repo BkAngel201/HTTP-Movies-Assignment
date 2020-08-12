@@ -61,7 +61,25 @@ body {
   padding: 5px 10px;
   background-color: lightseagreen;
 }
-.save-button:hover {
+.upd-button {
+  position: absolute;
+  top: 25px;
+  right: 95px;
+  border: 1px solid grey;
+  padding: 5px 10px;
+  background-color: lightseagreen;
+}
+.del-button {
+  position: absolute;
+  top: 25px;
+  right: 180px;
+  border: 1px solid grey;
+  padding: 5px 10px;
+  background-color: lightseagreen;
+}
+.save-button:hover,
+.upd-button:hover,
+.del-button:hover {
   background-color: green;
   color: white;
 }
