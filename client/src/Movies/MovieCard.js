@@ -1,24 +1,47 @@
 import React from 'react';
+import { Card, CardActionArea, CardContent, CardActions, Button, Typography } from '@material-ui/core';
 
 const MovieCard = props => {
-  const { title, director, metascore, stars } = props.movie;
+  const {id, title, director, metascore, stars } = props.movie;
   return (
-    <div className="movie-card">
-      <h2>{title}</h2>
-      <div className="movie-director">
-        Director: <em>{director}</em>
-      </div>
-      <div className="movie-metascore">
-        Metascore: <strong>{metascore}</strong>
-      </div>
-      <h3>Actors</h3>
-
-      {stars.map(star => (
-        <div key={star} className="movie-star">
-          {star}
-        </div>
-      ))}
-    </div>
+    <Card >
+      <CardActionArea>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Director: {director}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            MetaScore: {metascore}
+          </Typography>
+          <Typography variant="h6" component="p">
+            Actors
+          </Typography>
+          {
+            stars.map(star => (
+              <Typography variant="subtitle2" component="p">
+                {star}
+              </Typography>
+            ))
+          }
+        </CardContent>
+      </CardActionArea>
+      {props.hideButtons ? null : 
+        <CardActions>
+          <Button size="small" color="primary" onClick={props.saveMovie}>
+            Save
+          </Button>
+          <Button size="small" color="primary" onClick={props.updateMovie}>
+            Update
+          </Button>
+          <Button size="small" color="secondary" onClick={() => {props.deleteMovie(id)}}>
+            Delete
+          </Button>
+        </CardActions>
+      }
+    </Card>
   );
 };
 

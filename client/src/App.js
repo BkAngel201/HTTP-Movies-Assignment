@@ -1,13 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
 import axios from 'axios';
+import UpdateMovie from "./Movies/UpdateMovie";
+import NavBar from "./Movies/NavBar";
+import { Grid, makeStyles } from "@material-ui/core";
+
+const useStyle = makeStyles(() => ({
+  grid: {
+    padding: '15px 70px !important',
+    '& a': {
+      textDecoration: 'none'
+    },
+    '& .MuiPaper-root': {
+      marginBottom: 10
+    }
+  }
+}))
 
 const App = () => {
+  const history = useHistory()
+  const classes = useStyle()
   const [savedList, setSavedList] = useState([]);
   const [movieList, setMovieList] = useState([]);
+  const [needToUpd, setNeedToUpd] = useState(true)
 
   const getMovieList = () => {
     axios
@@ -21,20 +39,54 @@ const App = () => {
   };
 
   useEffect(() => {
-    getMovieList();
-  }, []);
+    if(needToUpd) {
+      getMovieList();
+      setNeedToUpd(false)
+    }
+  }, [needToUpd]);
+
+  const checkInSavedList = (id) => {
+    setSavedList(savedList.filter(el => {
+      return parseInt(el.id) !== parseInt(id)
+    }))
+  }
+
+  const updateInSavedList = (movie) => {
+    setSavedList(savedList.map(el => {
+      if(parseInt(el.id) !== parseInt(movie.id)) {
+        return el
+      } else {
+        return movie
+      }
+    }))
+  }
+
 
   return (
     <>
-      <SavedList list={savedList} />
+    <NavBar/>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          <SavedList list={savedList} />
+        </Grid>
+        <Grid item xs={9} className={classes.grid}>
+          <Route exact path="/">
+            <MovieList movies={movieList} />
+          </Route>
+          <Route path="/movies/:id">
+            <Movie addToSavedList={addToSavedList} setNeedToUpd={setNeedToUpd} checkInSavedList={checkInSavedList} />
+          </Route>
+          <Route path="/update-movie/:id">
+            <UpdateMovie setNeedToUpd={setNeedToUpd} addMethod={false} updateInSavedList={updateInSavedList}/>
+          </Route>
+          <Route path="/add-movie">
+            <UpdateMovie setNeedToUpd={setNeedToUpd} addMethod={true}/>
+          </Route>
+        </Grid>
+      </Grid>
+      
 
-      <Route exact path="/">
-        <MovieList movies={movieList} />
-      </Route>
-
-      <Route path="/movies/:id">
-        <Movie addToSavedList={addToSavedList} />
-      </Route>
+      
     </>
   );
 };
